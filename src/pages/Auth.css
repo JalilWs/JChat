@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1c2333;
+  font-family: "Inter", sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.auth-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1c2333;
+  margin: 0 0 4px;
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: #8a93a3;
+  margin: 0 0 24px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-form input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e6ea;
+  font-family: inherit;
+  font-size: 14px;
+  background: #f2f4f6;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #4f6f52;
+  background: #ffffff;
+}
+
+.auth-error {
+  color: #b3432c;
+  background: #fdece8;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 0;
+}
+
+.auth-submit {
+  margin-top: 6px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #d4a24c;
+  color: #1c2333;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.auth-submit:hover {
+  background: #e0b366;
+}
+
+.auth-submit:disabled {
+  background: #e2e6ea;
+  color: #8a93a3;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #8a93a3;
+  text-align: center;
+}
+
+.auth-footer a {
+  color: #4f6f52;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
