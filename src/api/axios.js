@@ -2,7 +2,7 @@ import axios from "axios"
 
 
 const api = axios.create({
-    baseURL: "https://backend-jchat-production.up.railway.app/"
+    baseURL: "https://backend-jchat-production.up.railway.app/api"
 })
 api.interceptors.request.use((config)=>{
     const token = localStorage.getItem('token')
