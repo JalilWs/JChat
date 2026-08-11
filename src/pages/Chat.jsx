@@ -117,7 +117,8 @@ function Chat() {
   );
 
   return (
-    <div className="chat-page">
+    /* ربط كلاس التنقل بوجود محادثة نشطة */
+    <div className={`chat-page ${activeConversation ? "active-chat" : ""}`}>
       {/* الشريط الجانبي */}
       <div className="sidebar">
         <div className="sidebar-header">
@@ -184,6 +185,17 @@ function Chat() {
           <div className="chat-empty">اختر محادثة للبدء</div>
         ) : (
           <>
+            {/* الهيدر الجديد للمحادثة مضاف إليه زر الرجوع للجوال */}
+            <div className="chat-header">
+              <button 
+                className="back-button" 
+                onClick={() => setActiveConversation(null)}
+              >
+                ←
+              </button>
+              <strong>{getOtherParticipant(activeConversation)?.username || "محدثة"}</strong>
+            </div>
+
             <div className="messages-area">
               {messages.map((msg) => {
                 const isMine = msg.sender === user._id;
