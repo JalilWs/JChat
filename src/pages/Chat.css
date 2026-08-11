@@ -1,6 +1,23 @@
-/* ===== 1. قائمة الدردشات (السايدبار) ===== */
+@import url("https://googleapis.com");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-page {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Inter", sans-serif;
+  color: #1c2333;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== 1. الشريط الجانبي (قائمة الدردشات) ===== */
 .sidebar {
-  width: 100%; /* تأخذ كامل الشاشة في الجوال افتراضياً */
   background: #1c2333;
   color: #f2f4f6;
   display: flex;
@@ -8,60 +25,271 @@
   flex-shrink: 0;
   height: 100%;
   transition: transform 0.3s ease-in-out;
+  
+  /* الوضع الافتراضي للجوال: يأخذ الشاشة كاملة ويتنقل بالانزلاق */
+  width: 100%;
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 2; /* إعطاؤها الأولوية لتظهر فوق صفحة الرسائل في البداية */
+  z-index: 2;
 }
 
-/* ===== 2. منطقة الرسائل (المحادثة) ===== */
+/* ===== 2. منطقة الرسائل الرئيسية ===== */
 .chat-main {
-  width: 100%; /* تأخذ كامل الشاشة في الجوال */
-  height: 100%;
   display: flex;
   flex-direction: column;
   background: #f2f4f6;
   transition: transform 0.3s ease-in-out;
+  height: 100%;
+
+  /* الوضع الافتراضي للجوال: يختفي لليمين ويأخذ الشاشة كاملة عند الاستدعاء */
+  width: 100%;
   position: absolute;
-  left: 0; /* تبدأ من الصفر أيضاً */
+  left: 0;
   top: 0;
-  z-index: 1; /* تكون بالخلف افتراضياً */
-  transform: translateX(100%); /* ندفعها خارج الشاشة من جهة اليمين */
+  z-index: 1;
+  transform: translateX(100%);
 }
 
-/* ===== 3. ميكانيكية التنقل (التحول بالجوال) ===== */
-/* عندما تختار محادثة وتضيف كلاس .active-chat للحاوية (.chat-page) */
+/* ===== 3. ميكانيكية التنقل للجوال ===== */
 .chat-page.active-chat .sidebar {
-  transform: translateX(-100%); /* يتم سحب قائمة الدردشات لليسار خارج الشاشة */
+  transform: translateX(-100%);
 }
 
 .chat-page.active-chat .chat-main {
-  transform: translateX(0); /* تدخل صفحة الرسائل لملء الشاشة كاملة */
-  z-index: 3; /* ترتفع للأمام فوق القائمة */
+  transform: translateX(0);
+  z-index: 3;
 }
 
-/* ===== شاشات الكمبيوتر (إعادة الترتيب الطبيعي جنبًا إلى جنب) ===== */
+/* أزرار الهيدر والرجوع للجوال */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e6ea;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: #1c2333;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-username {
+  display: block;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.sidebar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* الأزرار وحقول المدخلات */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f2f4f6;
+}
+
+.btn-accent {
+  background: #d4a24c;
+  color: #1c2333;
+}
+
+/* قوائم البحث والدردشات */
+.user-search {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-search input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f2f4f6;
+  font-size: 15px;
+}
+
+.user-search input:focus {
+  outline: 2px solid #d4a24c;
+}
+
+.user-search-item {
+  padding: 10px 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+.user-search-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.conversation-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.conversation-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.conversation-item.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.avatar-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #555;
+  flex-shrink: 0;
+}
+
+.avatar-dot.online {
+  background: #6bbf7b;
+}
+
+/* منطقة الرسائل والفقاعات */
+.messages-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.message-row {
+  display: flex;
+  margin: 4px 0;
+}
+
+.message-row.sent {
+  justify-content: flex-start;
+}
+
+.message-row.received {
+  justify-content: flex-end;
+}
+
+.message-bubble {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.message-bubble.sent {
+  background: #4f6f52;
+  color: #ffffff;
+  border-bottom-left-radius: 4px;
+}
+
+.message-bubble.received {
+  background: #ffffff;
+  border: 1px solid #e2e6ea;
+  border-bottom-right-radius: 4px;
+}
+
+.message-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  background: #ffffff;
+  border-top: 1px solid #e2e6ea;
+}
+
+.message-form input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 24px;
+  border: 1px solid #e2e6ea;
+  font-size: 16px;
+}
+
+.message-form input:focus {
+  outline: none;
+  border-color: #4f6f52;
+}
+
+.message-form button {
+  background: #4f6f52;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ===== 4. شاشات الكمبيوتر (إصلاح تداخل التصميم الأصلي) ===== */
 @media (min-width: 768px) {
   .chat-page {
-    display: flex;
+    display: flex !important;
+    flex-direction: row !important;
   }
   
   .sidebar {
-    width: 280px;
-    position: relative;
+    width: 280px !important;
+    position: relative !important;
     transform: none !important;
-    z-index: auto;
+    z-index: auto !important;
   }
   
   .chat-main {
-    flex: 1;
-    position: relative;
+    flex: 1 !important;
+    width: auto !important;
+    position: relative !important;
     transform: none !important;
-    z-index: auto;
+    z-index: auto !important;
   }
   
+  /* إلغاء حركات التنقل الخاصة بالموبايل على الشاشات الكبيرة */
   .chat-page.active-chat .sidebar,
   .chat-page.active-chat .chat-main {
     transform: none !important;
+  }
+
+  .message-bubble {
+    max-width: 60%; /* العودة للحجم الصغير المناسب للشاشات الكبيرة */
+  }
+
+  .back-button {
+    display: none !important; /* إخفاء سهم الرجوع على الكمبيوتر */
   }
 }
